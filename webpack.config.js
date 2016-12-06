@@ -23,12 +23,21 @@ let config = {
     
     module: {
         loaders: [
-            { test: /\.ts$/, loader: 'ts' }
+            { test: /\.ts$/, loader: 'ts' },
+            {
+                test: /\.(jpe?g|png|gif|svg)$/i,
+                loaders: [
+                    'file?hash=sha512&digest=hex&name=[hash].[ext]',
+                    'image-webpack?bypassOnDebug&optimizationLevel=7&interlaced=false'
+                ]
+            }
         ]
     },
     
     plugins: [
-        new HtmlWebpackPlugin()
+        new HtmlWebpackPlugin({
+            template: './index.html'
+        })
     ]
 };
 

@@ -1,4 +1,4 @@
-import { Cell } from './Cell';
+import { Cell } from './cell';
 
 class Board {
     public cells: Cell[] = [];
@@ -8,7 +8,7 @@ class Board {
     constructor(width: number, height: number) {
         this.width = width;
         this.height = height;
-        this.sampleCell = new Cell(0, 0, 0);
+        this.sampleCell = new Cell(0, 0);
     }
 
     public createBoard(): void {
@@ -53,7 +53,7 @@ class Board {
         let y = 0;
 
         for (let i = 0; i < count; i++) {
-            let cell = new Cell(i, x, y);
+            let cell = new Cell(x, y);
             this.cells.push(cell);
 
             x += cellWidth;

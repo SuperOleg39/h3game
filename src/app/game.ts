@@ -1,7 +1,10 @@
+import { Global } from './global';
 import Canvas from './Canvas';
 import Draw from './Draw';
 import Board from './Board';
+import { Cell } from './cell';
 import { EntityManager } from './entityManager';
+import { Entity } from './entity';
 
 import { EventEmitter } from './eventEmitter';
 
@@ -17,7 +20,9 @@ function start() {
 }
 
 class Game {
-    gameId: string = 'game';
+    gameId: string = 'canvas';
+    container: any;
+    grid: any;
     canvas: Canvas;
     canvasElement: HTMLCanvasElement;
     draw: Draw;
@@ -31,7 +36,7 @@ class Game {
     }
 
     private createCanvas(): void {
-        this.canvas = new Canvas(1000, 700, this.gameId);
+        this.canvas = new Canvas(300, 150, this.gameId);
         this.canvasElement = this.canvas.create();
     }
 
@@ -39,38 +44,49 @@ class Game {
         const board = new Board(this.canvasElement.width, this.canvasElement.height);
         board.createBoard();
 
-        document.body.appendChild(this.canvasElement);
+        Global.container.appendChild(this.canvasElement);
 
+        let ctx: CanvasRenderingContext2D = getContext(this.canvasElement);
         let draw = this.draw = new Draw(this.canvasElement);
-            let k = 0;
+
+        // board.cells.forEach(item => {
+        //     let props = new Cell(item.x, item.y);
+        //     let entity = new Entity(props);
+        //     EntityManager.register(entity);
+        // });
+
+        let props = new Cell();
+        let entity = new Entity(props);
+        EntityManager.register(entity);
+
+        Global.ctx = ctx;
 
         requestAnimationFrame(step);
+        
+        function timeShift(time) {
+            return Date.now() - time;
+        }
 
+        
         function step(timestamp) {
-            console.log(timestamp);
-            let cell = board.cells[k];
-            EntityManager.createEntity([cell], 'green');
-            cell = board.cells[k+1];
-            EntityManager.createEntity([cell], 'purple');
+            console.log(timestamp)
 
-            k++;
-
-            if (!board.cells[k]) {
-                k = 0;
-            }
-
+            // Global.grid.innerHTML = '';
             draw.fill();
-            EntityManager.entityStore.forEach(item => {
-                item.cells.forEach(elem => {
-                    draw.rect(elem.posX, elem.posY, elem.width, elem.height, item.color);
-                });
+
+            EntityManager.store.forEach(item => {
+                item.reflow();
             });
 
             setTimeout(function() {
                 requestAnimationFrame(step);
-            }, 1000 / 120);
+            }, 1000 / 60);
         }
     }
+}
+
+function getContext(canvas: any): CanvasRenderingContext2D {
+    return canvas.getContext('2d');
 }
 
 export default Game;

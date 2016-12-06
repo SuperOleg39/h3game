@@ -5,10 +5,16 @@ class Canvas {
         public height: number = 100,
         public id: string = 'canvas'
     ) { }
-    
+
     public create(): HTMLCanvasElement {
-        this.createCanvas();
-        this.applyOptionsToCanvas();
+        if (!this.element) {
+            this.createCanvas();
+            this.applyOptions();
+        }
+        return this.element;
+    }
+    
+    public get(): HTMLCanvasElement {
         return this.element;
     }
 
@@ -16,7 +22,7 @@ class Canvas {
         this.element = document.createElement('canvas');
     }
 
-    private applyOptionsToCanvas(): void {
+    private applyOptions(): void {
         this.element.width = this.width;
         this.element.height = this.height;
         this.element.id = this.id;

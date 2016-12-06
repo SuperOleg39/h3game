@@ -1,12 +1,9 @@
-import { Entity, IEntity }  from './entity';
-import { ICell }            from './cell';
+import { IEntity } from './entity';
 
 export namespace EntityManager {
-    export let entityStore: IEntity[] = [];
+    export let store: IEntity[] = [];
 
-    export function createEntity(cells: ICell[], color: string): IEntity {
-        let entity = new Entity(cells, color);
-        entityStore.push(entity);
-        return entity;
+    export function register(entity: IEntity): void {
+        store.push(entity);
     }
 }

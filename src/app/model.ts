@@ -1,22 +1,25 @@
 import { EventEmitter } from './eventEmitter';
+import { ICell } from './cell';
 
 export interface IModel {
     emitter: EventEmitter;
-    getProps(): any;
+    readonly props: ICell;
+    move(x: number, y: number): void;
+}
+
+export interface IModelConstructor {
+    new (props: ICell): IModel;
 }
 
 export class Model implements IModel {
-    private props = {
-        x: 0,
-        y: 0,
-        width: 25,
-        height: 25
-    };
     emitter = new EventEmitter();
-    constructor() { }
+    constructor(readonly props: ICell)  { }
+    
+    move(x: number, y: number) {
+        console.log(x, y)
+        this.props.x = x;
+        this.props.y = y;
 
-    getProps() {
-        return this.props;
-        // return Object.assign({}, this.props);
+        this.emitter.emit('change');
     }
 }

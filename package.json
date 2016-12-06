@@ -5,7 +5,11 @@
   "main": "index.js",
   "dependencies": {},
   "devDependencies": {
+    "@types/node": "0.0.2",
     "html-webpack-plugin": "^2.24.1",
+    "image-webpack-loader": "^3.0.0",
+    "install": "^0.8.2",
+    "npm": "^4.0.3",
     "ts-loader": "^1.2.2",
     "typescript": "^2.0.10",
     "webpack": "^1.13.3",
